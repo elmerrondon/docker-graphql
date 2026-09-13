@@ -7,35 +7,26 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with: 
-       fetch-depth: 0
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
     
-    - name: Docker login
-      env:
-         DOCKER_USER: ${{secrets.DOCKER_USER}}
-         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      run: |
-       docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
-
-     steps:
       - name: Build Docker Image 
-      run: |
-        docker build -t elmerrondon/docker-graphql:0.0.2 .
+        run: |
+          docker build -t elmerrondon/docker-graphql:0.0.2 .
 
-     steps:
       - name: Push Docker Image
         run: |
-          docker push elmerrondon/docker-graphql:0.0.2 .
-        
-      
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+          docker push elmerrondon/docker-graphql:0.0.2
